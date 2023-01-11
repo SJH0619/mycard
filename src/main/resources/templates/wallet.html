@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Business Card List</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-5.2.0/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common-style/common-style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navigationbar::navigationbar}"></div>
+<main class="container">
+    <div class="px-4 py-4 rounded" id="card-content">
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                <h1>명함 지갑</h1>
+            </div>
+            <div class="col">
+                <div class="col toast float-end fade show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            X 버튼을 눌러 대상 명함을 구독 취소 가능
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <th:block th:if="${subscribs.size != 0}">
+            <div th:each="subscrib: ${subscribs}" class="card border-0 mb-3">
+                <div class="card-body">
+                    <div class="row row-cols-auto justify-content-between">
+                        <div class="row">
+                            <div class="col-auto align-self-center">
+                                <img id="empLogo" th:if="${subscrib.pubEmpLogoImgPath != null}" class="img-fluid" th:src="@{|/getimage?type=_EMPLOGO.svg&userId=${subscrib.pubUserId}|}" alt="회사 로고">
+                                <img id="empLogo" th:unless="${subscrib.pubEmpLogoImgPath != null}" class="img-fluid" th:src="@{/testImage/default_EMPLOGO.svg}" alt="회사 로고">
+                            </div>
+                            <div class="col align-self-center mt-2">
+                                <h4 th:if="${subscrib.pubEmpName != null}" th:text="${subscrib.pubEmpName}" class="card-title"></h4>
+                                <h4 th:unless="${subscrib.pubEmpName != null}" th:text="미등록" class="card-title"></h4>
+                                <span class="card-title">
+                                    <h5 th:if="${subscrib.pubName != null}" th:text="${subscrib.pubName}"></h5>
+                                    <h5 th:unless="${subscrib.pubName != null}" th:text="미등록"></h5>
+                                </span>
+                                <div class="row row-cols-auto">
+                                    <h6 th:if="${subscrib.pubPhoneNum != null}" th:text="${subscrib.pubPhoneNum}" class="col card-subtitle text-muted mb-2"></h6>
+                                    <h6 th:unless="${subscrib.pubPhoneNum != null}" th:text="미등록" class="col card-subtitle text-muted mb-2"></h6>
+                                    <h6 th:if="${subscrib.pubEmail != null}" th:text="${subscrib.pubEmail}" class="col card-subtitle text-muted"></h6>
+                                    <h6 th:unless="${subscrib.pubEmail != null}" th:text="미등록" class="col card-subtitle text-muted"></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <a type="button" th:href="@{|/removebusinesscard/${subscrib.pubUserId}|}" class="btn-close"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:unless="${subscribs.size != 0}">
+            <p class="text-center text-muted fs-3">아직 등록된 유저가 없어요. 열심히 QR코드를 촬영해봐요!</p>
+        </th:block>
+    </div>
+</main>
+<div th:replace="~{fragments/footer::footer}"></div>
+<script th:src="@{/bootstrap-5.2.0/bootstrap.min.js}"></script>
+</body>
+</html>

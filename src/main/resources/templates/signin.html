@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Log in</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-5.2.0/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common-style/common-style.css}">
+    <link rel="stylesheet" th:href="@{/login-background/style.css}">
+    <style>
+        body {
+            padding-top: unset;
+        }
+
+        .card {
+            --bs-card-bg: #F3E9FE;
+        }
+    </style>
+</head>
+<body>
+<div class="ocean">
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
+<main class="vh-100">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card border-0">
+                    <div class="card-body p-5">
+                        <div class="mb-md-4 mt-md-4">
+                            <form th:action="@{/signin}" method="POST">
+                                <h2 class="fw-bold text-center mb-2">로그인</h2>
+                                <p class="text-center text-muted mb-4">로그인을 통해 여러 기능을 수행하세요.</p>
+                                <div th:if="${param.error}">
+                                    <div class="alert alert-danger">
+                                        사용자ID 또는 비밀번호를 확인해 주세요.
+                                    </div>
+                                </div>
+                                <div class="form-floating border-0 mb-3">
+                                    <input type="text" id="userId" name="userId" class="form-control border-0" placeholder="아이디" required>
+                                    <label for="userId">아이디</label>
+                                </div>
+                                <div class="form-floating border-0 mb-3">
+                                    <input type="password" id="userPwd" name="userPwd" class="form-control border-0" placeholder="비밀번호" required>
+                                    <label for="userPwd">비밀번호</label>
+                                </div>
+                                <div class="checkbox mb-3 text-center mb-3">
+                                    <label>
+                                        <input type="checkbox" name="remember-me"> 로그인 상태 유지
+                                    </label>
+                                </div>
+                                <a class="w-100 btn btn-lg btn-outline-custom-purple mb-3" th:href="@{/signup}">회원가입</a>
+                                <button type="submit" class="w-100 btn btn-lg btn-custom-purple">로그인</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/bootstrap-5.2.0/bootstrap.min.js}"></script>
+</body>
+</html>

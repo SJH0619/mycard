@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>My Card</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-5.2.0/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common-style/common-style.css}">
+    <script type="text/javascript">
+        document.oncontextmenu = function(){
+            return false;
+        }
+    </script>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<div th:replace="~{fragments/navigationbar::navigationbar}"></div>
+<main class="container">
+    <div class="px-4 py-4 rounded" id="card-content">
+        <div id="profile-pic" class="d-flex mx-auto mt-3">
+            <img th:if="${privacy.profileImgPath != null}" th:src="@{/getimage?type=_PROFILE.png}" class="img-fluid rounded-circle" alt="프로필 사진">
+            <img th:unless="${privacy.profileImgPath != null}" th:src="@{/testImage/default_PROFILE.jpg}" class="img-fluid rounded-circle" alt="프로필 사진">
+        </div>
+        <div class="row mt-5">
+            <h1 th:if="${privacy.name != null}" th:text="${privacy.name}" class="text-center"></h1>
+            <h1 th:unless="${privacy.name != null}" th:text="미등록" class="text-center"></h1>
+            <span class="text-center">
+                <a id="phoneNum" th:if="${privacy.phoneNum != null}" th:text="${privacy.phoneNum}" class="text-muted fs-3"></a>
+                <a th:unless="${privacy.phoneNum != null}" th:text="미등록" class="text-muted fs-3"></a>
+            </span>
+            <span class="text-center mb-5">
+                <a id="email" th:if="${privacy.email != null}" th:text="${privacy.email}" class="text-muted fs-3"></a>
+                <a th:unless="${privacy.email != null}" th:text="미등록" class="text-muted fs-3"></a>
+            </span>
+            <span class="text-center"><img class="img-fluid rounded" th:src="@{/getimage?type=_QRCODE.png}" alt="QR코드"></span>
+        </div>
+        <div class="row mt-5">
+            <div class="accordion px-0" id="accordionExample">
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            재직 중인 회사 정보
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
+                        <div class="accordion-body row row-cols-auto">
+                            <span class="col-auto">
+                                <img id="empLogo" th:if="${privacy.empLogoImgPath}" th:src="@{/getimage?type=_EMPLOGO.svg}" class="img-fluid" alt="회사 로고">
+                                <img th:unless="${privacy.empLogoImgPath}" th:src="@{/testImage/default_EMPLOGO.svg}" class="img-fluid" alt="회사 로고">
+                            </span>
+                            <div class="col">
+                                <p th:if="${privacy.empName != null}" th:text="|회사명: ${privacy.empName}|"></p>
+                                <p th:unless="${privacy.empName != null}" th:text="|회사명: 미등록|"></p>
+                                <p th:if="${privacy.empTel != null}" th:text="|회사 전화: ${privacy.empTel}|"></p>
+                                <p th:unless="${privacy.empTel != null}" th:text="|회사 전화: 미등록|"></p>
+                                <p th:if="${privacy.empFax != null}" th:text="|회사 팩스: ${privacy.empFax}|"></p>
+                                <p th:unless="${privacy.empFax != null}" th:text="|회사 팩스: 미등록|"></p>
+                                <p th:if="${privacy.empEmail != null}" th:text="|회사 이메일: ${privacy.empEmail}|"></p>
+                                <p th:unless="${privacy.empEmail != null}" th:text="|회사 이메일: 미등록|"></p>
+                                <p th:if="${privacy.empAddress != null}" th:text="|회사 주소: ${privacy.empAddress}|"></p>
+                                <p th:unless="${privacy.empAddress != null}" th:text="|회사 주소: 미등록|"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item border-0">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            간단한 자기 소개
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                        <div class="accordion-body">
+                            <p th:if="${privacy.simpleIntro != null}" th:text="${privacy.simpleIntro}"></p>
+                            <p th:unless="${privacy.simpleIntro != null}" th:text="|내용 없음.|"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer::footer}"></div>
+<script th:src="@{/bootstrap-5.2.0/bootstrap.min.js}"></script>
+<script th:inline="javascript">
+    const phoneNum = document.querySelector('#phoneNum');
+    const email = document.querySelector('#email');
+    const modalEmpName = document.querySelector('#modalEmpName');
+    const modalEmpJoinDate = document.querySelector('#modalEmpJoinDate');
+    const modalEmpRetireDate = document.querySelector('#modalEmpRetireDate');
+    const modalEmpSimpleIntroDuty = document.querySelector('#modalEmpSimpleIntroDuty');
+
+    phoneNum.addEventListener('click', function() {
+        const telStr = 'tel:' + [[${privacy.phoneNum}]];
+        location.href = telStr;
+    });
+
+    email.addEventListener('click', function() {
+        const mailtoStr = 'mailto:' + [[${privacy.email}]]
+        location.href = mailtoStr;
+    });
+</script>
+</body>
+</html>

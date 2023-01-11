@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Set Info</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-5.2.0/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common-style/common-style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/common-style/setinfo-style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/croppie/croppie.css}">
+    <style>
+        #inputEmpLogo, #image-upload {
+            display: none;
+        }
+
+        .modal-body {
+            overflow: hidden;
+        }
+
+        #select-pic {
+            width: 100%;
+            height: 7%;
+        }
+
+        #crop-pic {
+            width: 100%;
+            height: 93%;
+        }
+
+        #editor_container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navigationbar :: navigationbar}"></div>
+<main class="container">
+    <div class="px-4 py-4 rounded" id="card-content">
+        <div class="row">
+            <div class="vstack px-0">
+                <h1>개인 정보 설정</h1>
+                <div id="profile-pic" class="d-flex mx-auto">
+                    <img id="profile-pic-img" th:if="${privacy.profileImgPath != null}" th:src="@{/getimage?type=_PROFILE.png}" class="img-fluid rounded-circle" alt="프로필 사진">
+                    <img id="profile-pic-img" th:unless="${privacy.profileImgPath != null}" th:src="@{/testImage/default_PROFILE.jpg}" class="img-fluid rounded-circle" alt="프로필 사진">
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btn-custom-purple" data-bs-toggle="modal" data-bs-target="#upload-n-crop">프로필 사진 수정</button>
+                </div>
+                <div class="form-floating border-0 mt-4 mb-2">
+                    <input type="text" id="set-name" name="name" class="form-control border-0" placeholder="이름" th:value="${privacy.name}">
+                    <label for="set-name">이름</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="tel" id="set-phonenum" name="phoneNum" class="form-control border-0" placeholder="휴대 전화 번호" th:value="${privacy.phoneNum}">
+                    <label for="set-phonenum">휴대 전화 번호</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="email" id="set-email" name="email" class="form-control border-0" placeholder="이메일 주소" th:value="${privacy.email}">
+                    <label for="set-email">이메일 주소</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="vstack mt-4 px-0">
+                <h1>회사 정보 설정</h1>
+                <div class="row mb-2">
+                    <span class="col-auto align-self-center">
+                        <img id="empLogo" th:if="${privacy.empLogoImgPath != null}" th:src="@{/getimage?type=_EMPLOGO.svg}" class="img-fluid" alt="회사 로고">
+                        <img id="empLogo" th:unless="${privacy.empLogoImgPath != null}" th:src="@{/testImage/default_EMPLOGO.svg}" class="img-fluid" alt="회사로고">
+                    </span>
+                    <div class="col-auto align-self-center">
+                        <label for="inputEmpLogo" class="btn btn-custom-purple">
+                            로고 선택
+                        </label>
+                        <input id="inputEmpLogo" type="file" accept="image/svg+xml" onchange="inputEmpLogoImage(this);">
+                    </div>
+                    <div class="col align-self-center">
+                        <p class="fs-6 text-muted mb-0">svg파일만 업로드 가능</p>
+                    </div>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="text" id="set-empname" name="empName" class="form-control border-0" placeholder="회사명" th:value="${privacy.empName}">
+                    <label for="set-empname">회사명</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="tel" id="set-emptel" name="empTel" class="form-control border-0" placeholder="회사 전화" th:value="${privacy.empTel}">
+                    <label for="set-emptel">회사 전화</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="tel" id="set-empfax" name="empFax" class="form-control border-0" placeholder="회사 팩스" th:value="${privacy.empFax}">
+                    <label for="set-empfax">회사 팩스</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="email" id="set-empemail" name="empEmail" class="form-control border-0" placeholder="회사 이메일 주소" th:value="${privacy.empEmail}">
+                    <label for="set-empemail">회사 이메일 주소</label>
+                </div>
+                <div class="form-floating border-0 mb-2">
+                    <input type="text" id="set-empaddress" name="empAddress" class="form-control border-0" placeholder="회사 주소" th:value="${privacy.empAddress}">
+                    <label for="set-empaddress">회사 주소</label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="vstack mt-4 px-0">
+                <h1>간단한 자기 소개</h1>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-floating border-0 mb-2">
+                            <textarea id="set-simpleintro" name="simpleIntro" class="form-control border-0" placeholder="간략한 자기 소개" th:value="${privacy.simpleIntro}"></textarea>
+                            <label for="set-simpleintro">간단한 자기 소개</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row px-0 pt-2 justify-content-end">
+            <div class="col-auto px-0">
+                <button id="allSaveBtn" type="button" class="btn btn-outline-custom-purple">저장</button>
+            </div>
+        </div>
+    </div>
+</main>
+<div th:replace="~{fragments/footer::footer}"></div>
+<div class="modal fade" id="upload-n-crop" tabindex="-1" aria-labelledby="upload-photo" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="upload-photo">사진 선택</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body px-3 py-3">
+                <div id="select-pic">
+                    <label for="image-upload" class="btn btn-custom-purple d-grid">
+                        사진 선택
+                    </label>
+                    <input id="image-upload" type="file" accept="image/png, image/jpeg" onchange="inputProfileImage(this);">
+                </div>
+                <div id="crop-pic">
+                    <div id="editor_container"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-profile" type="button" class="btn btn-custom-purple" data-bs-dismiss="modal" aria-label="Close">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/bootstrap-5.2.0/bootstrap.min.js}"></script>
+<script th:src="@{/croppie/croppie.min.js}"></script>
+<script th:inline="javascript">
+    let croppie;
+    let profileBase64;
+    let empLogoBase64;
+    const uploadNCrop = document.querySelector('#upload-n-crop');
+    const saveProfile = document.querySelector('#save-profile');
+    const allSaveBtn = document.querySelector('#allSaveBtn');
+
+    function inputProfileImage(input) {
+        if(input.files && input.files[0]) {
+            const profileReader = new FileReader();
+
+            profileReader.onload = e => {
+                croppie.bind({
+                    url: e.target.result,
+                });
+            };
+
+            profileReader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function inputEmpLogoImage(input) {
+        if(input.files && input.files[0]) {
+            const logoReader = new FileReader();
+
+            logoReader.onload = e => {
+                document.querySelector('#empLogo').setAttribute('src', e.target.result)
+                empLogoBase64 = e.target.result.replace('data:image/svg+xml;base64,', '');
+            }
+
+            logoReader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    async function postFetch(url, data) {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        return response;
+    }
+
+    uploadNCrop.addEventListener('shown.bs.modal', function() {
+        croppie = new Croppie(document.querySelector('#editor_container'), {
+            viewport: { width: 294, height: 294, type: 'circle' },
+            showZoomer: false,
+        });
+
+        croppie.bind({
+            url: '/testImage/default_PROFILE.jpg',
+        });
+    });
+
+    saveProfile.addEventListener('click', function() {
+        croppie.result({
+            type: 'base64',
+            size: 'viewport',
+            format: 'png',
+            quality: 1,
+            circle: true
+        }).then(function(base64) {
+            document.querySelector('#profile-pic-img').src = base64;
+            profileBase64 = base64.replace('data:image/png;base64,', '');
+        });
+    });
+
+    uploadNCrop.addEventListener('hidden.bs.modal', function() {
+        croppie.destroy();
+    });
+
+    allSaveBtn.addEventListener('click', function() {
+        postFetch('/saveprivacy', {
+            profileBase64: profileBase64,
+            name: document.querySelector('input[name="name"]').value,
+            phoneNum: document.querySelector('input[name="phoneNum"]').value,
+            email: document.querySelector('input[name="email"]').value,
+            empLogoBase64: empLogoBase64,
+            empName: document.querySelector('input[name="empName"]').value,
+            empTel: document.querySelector('input[name="empTel"]').value,
+            empFax: document.querySelector('input[name="empFax"]').value,
+            empEmail: document.querySelector('input[name="empEmail"]').value,
+            empAddress: document.querySelector('input[name="empAddress"]').value,
+            simpleIntro: document.querySelector('textarea[name="simpleIntro"]').value
+        }).then((response) => {
+            if (response.status == 200) {
+                window.location.replace('/mycard');
+            } else {
+                alert('예기치 못한 에러가 발생했습니다. 잠시 후에 다시 시도하거나 관리자에게 연락바랍니다.');
+                window.location.reload();
+            }
+        });
+    });
+</script>
+</body>
+</html>
