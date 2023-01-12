@@ -45,9 +45,6 @@ public class SecurityConfig {
             )
             .rememberMe(remember -> remember
                 .rememberMeServices(rememberMeServices)
-            )
-            .csrf(csrf -> csrf
-                .disable()
             );
 
         return httpSecurity.build();
