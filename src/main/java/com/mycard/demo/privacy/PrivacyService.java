@@ -73,7 +73,7 @@ public class PrivacyService {
     }
 
     private String makePath(boolean checkType, String userId) {
-        String uploadBase = "C:\\upload\\";
+        String uploadBase = "./upload/";
 
         File uploadDir = new File(uploadBase);
 

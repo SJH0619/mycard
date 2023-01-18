@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta id="_csrf" name="_csrf" th:content="${_csrf.token}">
+    <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}">
     
     <title>Set Info</title>
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap-5.2.0/bootstrap.min.css}">
@@ -156,6 +158,8 @@
     const uploadNCrop = document.querySelector('#upload-n-crop');
     const saveProfile = document.querySelector('#save-profile');
     const allSaveBtn = document.querySelector('#allSaveBtn');
+    const header = document.querySelector('meta[name="_csrf_header"]').content;
+    const token = document.querySelector('meta[name="_csrf"]').content;
 
     function inputProfileImage(input) {
         if(input.files && input.files[0]) {
@@ -189,6 +193,8 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'header': header,
+                'X-CSRF-Token': token,
             },
             body: JSON.stringify(data),
         });
@@ -239,9 +245,9 @@
             simpleIntro: document.querySelector('textarea[name="simpleIntro"]').value
         }).then((response) => {
             if (response.status == 200) {
-                window.location.replace('/mycard');
+                window.location.replace('mycard');
             } else {
-                alert('예기치 못한 에러가 발생했습니다. 잠시 후에 다시 시도하거나 관리자에게 연락바랍니다.');
+                alert('잠시 후에 다시 시도하거나 관리자에게 연락바랍니다.');
                 window.location.reload();
             }
         });

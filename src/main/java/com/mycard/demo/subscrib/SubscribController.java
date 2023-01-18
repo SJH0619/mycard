@@ -40,7 +40,7 @@ public class SubscribController {
         Boolean checkPubUserExist = this.userService.checkUserExist(pubUserId);
         this.subscribService.addBusinessCard(principal.getName(), pubUserId, checkPubUserExist);
 
-        return "redirect:/wallet";
+        return "redirect:wallet";
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -48,6 +48,6 @@ public class SubscribController {
     public String removeBusinessCard(@PathVariable("pubUserId") String pubUserId, Principal principal) {
         this.subscribService.removeBusinessCard(principal.getName(), pubUserId);
 
-        return "redirect:/wallet";
+        return "redirect:wallet";
     }
 }

@@ -31,7 +31,7 @@ public class PrivacyController {
     @GetMapping("/setinfo")
     public String getPrivacy(Principal principal, Model model) {
         model.addAttribute("privacy", this.privacyService.getPrivacy(principal.getName()));
-        return "/setinfo";
+        return "setinfo";
     }
 
     @PreAuthorize("isAuthenticated()")

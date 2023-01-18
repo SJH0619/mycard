@@ -15,11 +15,11 @@ import com.google.zxing.common.BitMatrix;
 @Component
 public class QrCodeProcess {
     public void createQrCode(String userId) throws WriterException, IOException {
-        String defaultQrCodeContent = "http://localhost:18080/addbusinesscard/";
+        String defaultQrCodeContent = "http://43.201.111.6:18080/addbusinesscard/";
         String qrCodeContent = defaultQrCodeContent + userId;
 
         BitMatrix matrix = new MultiFormatWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, 296, 296);
-        Path path = Paths.get("C:\\upload\\" + userId + "_QRCODE.png");
+        Path path = Paths.get("./upload/" + userId + "_QRCODE.png");
 
         try {
             MatrixToImageWriter.writeToPath(matrix, "png", path);

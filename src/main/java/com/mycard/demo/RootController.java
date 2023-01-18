@@ -41,7 +41,7 @@ public class RootController {
             return "redirect:/setinfo";
         } else {
             model.addAttribute("privacy", this.privacyService.getPrivacy(principal.getName()));
-            return "/mycard";
+            return "mycard";
         }
     }
 
@@ -56,9 +56,9 @@ public class RootController {
         File file;
 
         if (userId == null) {
-            file = new File("C:\\upload\\" + principal.getName() + type);
+            file = new File("./upload/" + principal.getName() + type);
         } else {
-            file = new File("C:\\upload\\" + userId + type);
+            file = new File("./upload/" + userId + type);
         }
 
         try {
